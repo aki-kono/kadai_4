@@ -1,0 +1,93 @@
+<header>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+      <li><%= link_to "Bookers", root_path, class: 'navbar-brand' %></li>
+      <!--<a class="navbar-brand" href="/"><span>Bookers</span></a>-->
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        <ul class="navbar-nav ml-auto">
+          <% if user_signed_in? %> <%# ログインしてた時は、HOME,Users,Books, log out の四つ %>
+            <%= link_to user_path(current_user.id), class: 'nav-link text-light' do %>
+              <i class="fas fa-home"></i>Home
+            <% end %>
+            <%= link_to users_path, class: 'nav-link text-light' do %>
+              <i class="fas fa-users"></i>Users
+            <% end %>
+            <%= link_to books_path, class: 'nav-link text-light' do %>
+              <i class="fas fa-book-open"></i>Books
+            <% end %>
+            <%= link_to destroy_user_session_path, method: :delete, class: 'nav-link text-light' do %>
+              <i class="fas fa-sign-out-alt"></i>Log out
+            <% end %>
+          <% else %> <%#ログインしてない時はHOME,about,sign up, log in の四つ%>
+            <%= link_to root_path, class: 'nav-link text-light' do %>
+              <i class="fas fa-home"></i>Home
+            <% end %>
+            <%= link_to about_path, class: 'nav-link text-light' do %>
+              <i class="fas fa-link"></i>About
+            <% end %>
+            <%= link_to new_user_registration_path, class: 'nav-link text-light' do %>
+              <i class="fas fa-user-plus"></i>Sign up
+            <% end %>
+            <%= link_to new_user_session_path, class: 'nav-link text-light' do %>
+              <i class="fas fa-sign-in-alt"></i>Log in
+            <% end %>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>
+
+
+  <% if @user.errors.any? %>
+    <%= @user.errors.count %>件のエラーが発生しました
+    <% @user.errors.full_messages.each do |message| %>
+      <%= message %>
+    <% end %>
+    <p>error</p>
+  <% end %>
+
+
+
+
+
+
+
+
+<%#= render '../views/header', user: @user%>
+<%= flash[:update] %>
+
+<div class="container">
+  <div class="row">
+    <div class="col-sm-12 col-md-8 col-lg-5 px-5 px-sm-0 mx-auto">
+    <h2>User info</h2>
+    <%= form_with model:@user, local:true do |f| %>
+      <div class="form-group">
+        <label for="user_name">Name</labl>
+        <%= f.text_field :name, autofocus: true, id:"inputName", placeholder:"名前",class:"form-control name"%>
+        <!--<input class="form-control name" type="text" value="cc" name="user[name]" id="user_name">-->
+      </div>
+      <div class="form-group">
+        <label for="user_image">Image</label>
+        <%= f.file_field :profile_image, accept: "image/*",class:"form-control-file user_image" %>
+        <!--<input value="{}" data-reference="3b6eff96ee676ee95fdce7a7219ed00b" type="hidden" name="user[profile_image]"><input class="form-control-file user_image" data-reference="3b6eff96ee676ee95fdce7a7219ed00b" include_hidden="false" type="file" name="user[profile_image]" id="user_profile_image">-->
+      </div>
+      <div class="form-group">
+        <label for="user_introduction">Introduction</label>
+        <!--<textarea class="form-control introduction" name="user[introduction]" id="user_introduction"></textarea>-->
+        <%= f.text_field :introduction, autofocus: true,class:"form-control introduction" %>
+      </div>
+      <div class="form-group">
+        <!--<input type="submit" name="commit" value="Update User" class="btn btn-secondary" data-disable-with="Update User">-->
+        <%= f.submit "Update User",class:"btn btn-secondary" %>
+      </div>
+    <% end %>
+    </div>
+  </div>
+</div>
+
+<%= render '../views/footer'%>

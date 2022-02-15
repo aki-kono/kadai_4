@@ -1,0 +1,73 @@
+<header>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+      <li><%= link_to "Bookers", root_path, class: 'navbar-brand' %></li>
+      <!--<a class="navbar-brand" href="/"><span>Bookers</span></a>-->
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        <ul class="navbar-nav ml-auto">
+          <% if user_signed_in? %> <%# ログインしてた時は、HOME,Users,Books, log out の四つ %>
+            <%= link_to user_path(current_user.id), class: 'nav-link text-light' do %>
+              <i class="fas fa-home"></i>Home
+            <% end %>
+            <%= link_to users_path, class: 'nav-link text-light' do %>
+              <i class="fas fa-users"></i>Users
+            <% end %>
+            <%= link_to books_path, class: 'nav-link text-light' do %>
+              <i class="fas fa-book-open"></i>Books
+            <% end %>
+            <%= link_to destroy_user_session_path, method: :delete, class: 'nav-link text-light' do %>
+              <i class="fas fa-sign-out-alt"></i>Log out
+            <% end %>
+          <% else %> <%#ログインしてない時はHOME,about,sign up, log in の四つ%>
+            <%= link_to root_path, class: 'nav-link text-light' do %>
+              <i class="fas fa-home"></i>Home
+            <% end %>
+            <%= link_to about_path, class: 'nav-link text-light' do %>
+              <i class="fas fa-link"></i>About
+            <% end %>
+            <%= link_to new_user_registration_path, class: 'nav-link text-light' do %>
+              <i class="fas fa-user-plus"></i>Sign up
+            <% end %>
+            <%= link_to new_user_session_path, class: 'nav-link text-light' do %>
+              <i class="fas fa-sign-in-alt"></i>Log in
+            <% end %>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>
+
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-sm-12 col-md-8 col-lg-5 px-5 px-sm-0 mx-auto">
+  		<h1>Editing Book</h1>
+
+  <% if @book.errors.any? %>
+    <%= @book.errors.count %>件のエラーが発生しました
+    <% @book.errors.full_messages.each do |message| %>
+      <%= message %>
+    <% end %>
+    <p>error</p>
+  <% end %>
+
+<!-- form_with部分 -->
+<%= form_with model:@book, local: true do |f| %>
+  <h4>Title</h4>
+  <%= f.text_field :title, class:"form-control" %>
+  <h4>Body</h4>
+  <%= f.text_area :body, class:"form-control" %>
+  <%= f.submit 'Update Book', class:"btn btn-success" %>
+<% end %>
+<%= link_to "Show", book_path(@book) %> | <a class="back" href="/books">Back</a>
+
+</div>
+</div>
+</div>
+<%= render partial: '../views/footer' %>
