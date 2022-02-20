@@ -20,7 +20,7 @@
               <i class="fas fa-book-open"></i>Books
             <% end %>
             <%= link_to destroy_user_session_path, method: :delete, class: 'nav-link text-light' do %>
-              <i class="fas fa-sign-out-alt"></i>Log out
+              <i class="fas fa-sign-out-alt"></i>logout
             <% end %>
           <% else %> <%#ログインしてない時はHOME,about,sign up, log in の四つ%>
             <%= link_to root_path, class: 'nav-link text-light' do %>
@@ -30,10 +30,10 @@
               <i class="fas fa-link"></i>About
             <% end %>
             <%= link_to new_user_registration_path, class: 'nav-link text-light' do %>
-              <i class="fas fa-user-plus"></i>Sign up
+              <i class="fas fa-user-plus"></i>sign up
             <% end %>
             <%= link_to new_user_session_path, class: 'nav-link text-light' do %>
-              <i class="fas fa-sign-in-alt"></i>Log in
+              <i class="fas fa-sign-in-alt"></i>login
             <% end %>
           <% end %>
         </ul>
@@ -41,13 +41,6 @@
     </div>
   </nav>
 </header>
-
-
-
-
-
-
-
 
   <%#= render '../views/header', user: @user%>
   <%= flash[:create] %>
@@ -107,6 +100,25 @@
           <td>
             <%= book.body %>
           </td>
+
+          <td>
+                <% if book.favorited_by?(current_user) %>
+                  <p>
+                    <%= link_to book_favorites_path(book), method: :delete do %>
+                      <i class="fas fa-heart"></i><%= book.favorites.count %>
+                    <% end %>
+                  </p>
+                <% else %>
+                  <p>
+                    <%= link_to book_favorites_path(book), method: :post do %>
+                      <i class="fas fa-heart"></i><%= book.favorites.count %>
+                    <% end %>
+                  </p>
+                <% end %>
+              </td>
+
+
+          <td>コメント数：<%= book.book_comments.count %></td>
         </tr>
         <% end %>
         </tbody>

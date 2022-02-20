@@ -8,6 +8,8 @@ class User < ApplicationRecord
   #attachment :profile_image
   #attachment :profile_image
   has_one_attached :profile_image
+  has_many :favorites, dependent: :destroy
+  has_many :book_comments, dependent: :destroy
 
   # name：一意性を持たせ、かつ2～20文字の範囲で設定してください。
   validates :name, length: { minimum: 2, maximum: 20 }, uniqueness: true
